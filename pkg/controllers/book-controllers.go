@@ -11,7 +11,12 @@ import (
 	"github.com/irtza33/go-bookstore/tree/pure_sql/pkg/utils"
 )
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func CreateBook(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	CreateBook := &models.Book{}
 	utils.ParseBody(r, CreateBook)
 	b := CreateBook.CreateBook()
@@ -21,6 +26,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetBook(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	newBooks := models.GetAllBooks()
 	res, _ := json.Marshal(newBooks)
 	w.Header().Set("Content-Type", "application/json")
@@ -29,6 +35,8 @@ func GetBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetBookById(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
 	vars := mux.Vars(r)
 	bookId := vars["bookId"]
 	Id, err := strconv.ParseInt(bookId, 10, 0)
@@ -43,6 +51,8 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+
 	vars := mux.Vars(r)
 	bookId := vars["bookId"]
 	Id, err := strconv.ParseInt(bookId, 10, 0)
