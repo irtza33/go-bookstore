@@ -13,6 +13,9 @@ import (
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "*")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 }
 
 func CreateBook(w http.ResponseWriter, r *http.Request) {
@@ -20,8 +23,10 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	CreateBook := &models.Book{}
 	utils.ParseBody(r, CreateBook)
 	b := CreateBook.CreateBook()
+	fmt.Println(CreateBook)
 	res, _ := json.Marshal(b)
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader((http.StatusOK))
 	w.Write((res))
 }
 
